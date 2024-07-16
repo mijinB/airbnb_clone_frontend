@@ -10,7 +10,6 @@ import {
     ModalBody,
     ModalCloseButton,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     ModalOverlay,
     useDisclosure,
@@ -18,27 +17,19 @@ import {
 } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import { FaAirbnb, FaMoon, FaUserNinja, FaLock } from "react-icons/fa";
+import SocialLogin from "./SocialLogin";
 
 export default function Root() {
     const { isOpen, onClose, onOpen } = useDisclosure();
 
     return (
         <Box>
-            <HStack
-                justifyContent={"space-between"}
-                py={5}
-                px={10}
-                borderBottomWidth={1}
-            >
+            <HStack justifyContent={"space-between"} py={5} px={10} borderBottomWidth={1}>
                 <Box color={"red.500"}>
                     <FaAirbnb size={"48"} />
                 </Box>
                 <HStack spacing={"2.5px"}>
-                    <IconButton
-                        variant={"ghost"}
-                        aria-label="Toggle dark mode"
-                        icon={<FaMoon />}
-                    />
+                    <IconButton variant={"ghost"} aria-label={"Toggle dark mode"} icon={<FaMoon />} />
                     <Button onClick={onOpen}>Log in</Button>
                     <Button colorScheme={"red"}>Sign up</Button>
                 </HStack>
@@ -57,10 +48,7 @@ export default function Root() {
                                             </Box>
                                         }
                                     />
-                                    <Input
-                                        variant={"filled"}
-                                        placeholder="Username"
-                                    />
+                                    <Input variant={"filled"} placeholder="Username" />
                                 </InputGroup>
                                 <InputGroup>
                                     <InputLeftElement
@@ -70,18 +58,14 @@ export default function Root() {
                                             </Box>
                                         }
                                     />
-                                    <Input
-                                        variant={"filled"}
-                                        placeholder="Password"
-                                    />
+                                    <Input variant={"filled"} placeholder="Password" />
                                 </InputGroup>
                             </VStack>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button width={"100%"} colorScheme="red">
+                            <Button mt={4} width={"100%"} colorScheme={"red"}>
                                 Log in
                             </Button>
-                        </ModalFooter>
+                            <SocialLogin />
+                        </ModalBody>
                     </ModalContent>
                 </Modal>
             </HStack>
