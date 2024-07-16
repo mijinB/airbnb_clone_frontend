@@ -1,23 +1,7 @@
-import {
-    Box,
-    Button,
-    HStack,
-    IconButton,
-    Input,
-    InputGroup,
-    InputLeftElement,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalHeader,
-    ModalOverlay,
-    useDisclosure,
-    VStack,
-} from "@chakra-ui/react";
+import { Box, Button, HStack, IconButton, useDisclosure } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import { FaAirbnb, FaMoon, FaUserNinja, FaLock } from "react-icons/fa";
-import SocialLogin from "./SocialLogin";
+import { FaAirbnb, FaMoon } from "react-icons/fa";
+import LoginModal from "./LoginModal";
 
 export default function Root() {
     const { isOpen, onClose, onOpen } = useDisclosure();
@@ -33,41 +17,7 @@ export default function Root() {
                     <Button onClick={onOpen}>Log in</Button>
                     <Button colorScheme={"red"}>Sign up</Button>
                 </HStack>
-                <Modal onClose={onClose} isOpen={isOpen}>
-                    <ModalOverlay />
-                    <ModalContent>
-                        <ModalHeader>Log in</ModalHeader>
-                        <ModalCloseButton />
-                        <ModalBody>
-                            <VStack>
-                                <InputGroup>
-                                    <InputLeftElement
-                                        children={
-                                            <Box color={"gray.500"}>
-                                                <FaUserNinja />
-                                            </Box>
-                                        }
-                                    />
-                                    <Input variant={"filled"} placeholder="Username" />
-                                </InputGroup>
-                                <InputGroup>
-                                    <InputLeftElement
-                                        children={
-                                            <Box color={"gray.500"}>
-                                                <FaLock />
-                                            </Box>
-                                        }
-                                    />
-                                    <Input variant={"filled"} placeholder="Password" />
-                                </InputGroup>
-                            </VStack>
-                            <Button mt={4} width={"100%"} colorScheme={"red"}>
-                                Log in
-                            </Button>
-                            <SocialLogin />
-                        </ModalBody>
-                    </ModalContent>
-                </Modal>
+                <LoginModal isOpen={isOpen} onClose={onClose} />
             </HStack>
             <Outlet />
         </Box>
