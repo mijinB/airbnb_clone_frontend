@@ -18,7 +18,6 @@ export default function Header() {
     const { isOpen: isSignUpOpen, onClose: onSignUpClose, onOpen: onSignUpOpen } = useDisclosure();
     const { colorMode, toggleColorMode } = useColorMode();
     const logoColor = useColorModeValue("red.500", "red.200");
-    // color는 상관없지만, 컴포넌트는 대문자로 시작해야된다.
     const Icon = useColorModeValue(FaMoon, FaSun);
 
     return (
@@ -36,7 +35,6 @@ export default function Header() {
                     icon={<Icon />}
                 />
                 <Button onClick={onLoginOpen}>Log in</Button>
-                {/** dark mode일 때, 자동으로 연한 색상으로 변경해주는데 그냥 light mode일 때의 색상을 유지하고 싶다면 LightMode 태그 사용 */}
                 <LightMode>
                     <Button onClick={onSignUpOpen} colorScheme={"red"}>
                         Sign up
