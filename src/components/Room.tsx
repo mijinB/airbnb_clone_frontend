@@ -22,7 +22,12 @@ export default function Room() {
                     <Text noOfLines={1} fontSize={"md"} as={"b"}>
                         Calaca, 필리핀의 통나무집 전체
                     </Text>
-                    <HStack spacing={1}>
+                    <HStack
+                        _hover={{
+                            color: "yellow.400",
+                        }}
+                        spacing={1}
+                    >
                         <FaStar size={15} />
                         <Text>5.0</Text>
                     </HStack>
