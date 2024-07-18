@@ -2,7 +2,19 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getRoom, getRoomReviews } from "../api";
 import { IReview, IRoomDetail } from "../types";
-import { Avatar, Box, Grid, GridItem, Heading, HStack, Image, Skeleton, Text, VStack } from "@chakra-ui/react";
+import {
+    Avatar,
+    Box,
+    Container,
+    Grid,
+    GridItem,
+    Heading,
+    HStack,
+    Image,
+    Skeleton,
+    Text,
+    VStack,
+} from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
 
 export default function RoomDetail() {
@@ -54,7 +66,7 @@ export default function RoomDetail() {
                     <Skeleton isLoaded={!isRoomLoading} h={"30px"}>
                         <Heading fontSize={"2xl"}>House hosted by {RoomData?.owner.name}</Heading>
                     </Skeleton>
-                    <Skeleton isLoaded={!isRoomLoading} h={"30px"}>
+                    <Skeleton isLoaded={!isRoomLoading} h={"20px"}>
                         <HStack justifyContent={"flex-start"} w={"100%"}>
                             <Text>
                                 {RoomData?.toilets} toliet{RoomData?.toilets === 1 ? "" : "s"}
@@ -69,16 +81,37 @@ export default function RoomDetail() {
                 <Avatar src={RoomData?.owner.avatar} name={RoomData?.owner.name} size={"xl"} />
             </HStack>
             <Box mt={10}>
-                <Heading fontSize={"2xl"}>
-                    <HStack>
-                        <FaStar />
-                        <Text>{RoomData?.rating}</Text>
-                        <Text>·</Text>
-                        <Text>
-                            {reviewsData?.length} Review{reviewsData?.length === 1 ? "" : "s"}
-                        </Text>
-                    </HStack>
-                </Heading>
+                <Skeleton isLoaded={!isReviewsLoading} w={"10%"} h={"30px"}>
+                    <Heading mb={5} fontSize={"2xl"}>
+                        <HStack>
+                            <FaStar />
+                            <Text>{RoomData?.rating}</Text>
+                            <Text>·</Text>
+                            <Text>
+                                {reviewsData?.length} Review{reviewsData?.length === 1 ? "" : "s"}
+                            </Text>
+                        </HStack>
+                    </Heading>
+                </Skeleton>
+                <Container maxW={"container.xl"} marginX={"none"} mt={10}>
+                    <Grid templateColumns={"repeat(2, 1fr)"} gap={5}>
+                        {reviewsData?.map((review, index) => (
+                            <VStack key={index} alignItems={"flex-start"}>
+                                <HStack>
+                                    <Avatar src={review.user.avatar} name={review.user.name} size={"md"} />
+                                    <VStack alignItems={"flex-start"} spacing={0}>
+                                        <Heading fontSize={"md"}>{review.user.name}</Heading>
+                                        <HStack spacing={1}>
+                                            <FaStar size={"12px"} />
+                                            <Text>{review.rating}</Text>
+                                        </HStack>
+                                    </VStack>
+                                </HStack>
+                                <Text>{review.payload}</Text>
+                            </VStack>
+                        ))}
+                    </Grid>
+                </Container>
             </Box>
         </Box>
     );

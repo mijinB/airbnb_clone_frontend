@@ -46,7 +46,8 @@ export interface IRoomDetail extends IRoomList {
 }
 
 export interface IReview {
-    paylaod: string;
+    payload: string;
     description: string;
+    rating: number;
     user: IRoomOwner;
 }
