@@ -4,8 +4,7 @@ import { getRoom } from "../api";
 
 export default function RoomDetail() {
     const { roomPk } = useParams();
-    const { isLoading, data } = useQuery({ queryKey: [`room:${roomPk}`], queryFn: getRoom });
-    console.log(data);
+    const { isLoading, data } = useQuery({ queryKey: ["rooms", roomPk], queryFn: getRoom });
 
     return <h1>hello</h1>;
 }
