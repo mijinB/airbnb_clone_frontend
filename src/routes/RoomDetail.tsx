@@ -42,17 +42,21 @@ export default function RoomDetail() {
                 ))}
             </Grid>
             <HStack justifyContent={"space-between"} w={"40%"} mt={10}>
-                <VStack>
-                    <Heading fontSize={"2xl"}>House hosted by {data?.owner.name}</Heading>
-                    <HStack justifyContent={"flex-start"} w={"100%"}>
-                        <Text>
-                            {data?.toilets} toliet{data?.toilets === 1 ? "" : "s"}
-                        </Text>
-                        <Text>·</Text>
-                        <Text>
-                            {data?.rooms} room{data?.rooms === 1 ? "" : "s"}
-                        </Text>
-                    </HStack>
+                <VStack alignItems={"flex-start"}>
+                    <Skeleton isLoaded={!isLoading} h={"30px"}>
+                        <Heading fontSize={"2xl"}>House hosted by {data?.owner.name}</Heading>
+                    </Skeleton>
+                    <Skeleton isLoaded={!isLoading} h={"30px"}>
+                        <HStack justifyContent={"flex-start"} w={"100%"}>
+                            <Text>
+                                {data?.toilets} toliet{data?.toilets === 1 ? "" : "s"}
+                            </Text>
+                            <Text>·</Text>
+                            <Text>
+                                {data?.rooms} room{data?.rooms === 1 ? "" : "s"}
+                            </Text>
+                        </HStack>
+                    </Skeleton>
                 </VStack>
                 <Avatar src={data?.owner.avatar} name={data?.owner.name} size={"xl"} />
             </HStack>
