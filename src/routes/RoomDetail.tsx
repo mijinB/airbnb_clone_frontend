@@ -36,7 +36,7 @@ export default function RoomDetail() {
                 lg: 40,
             }}
         >
-            <Skeleton isLoaded={!isRoomLoading} w={"25%"} h={"43px"}>
+            <Skeleton isLoaded={!isRoomLoading} w={"25%"}>
                 <Heading>{RoomData?.name}</Heading>
             </Skeleton>
             <Grid
@@ -81,7 +81,7 @@ export default function RoomDetail() {
                 <Avatar src={RoomData?.owner.avatar} name={RoomData?.owner.name} size={"xl"} />
             </HStack>
             <Box mt={10}>
-                <Skeleton isLoaded={!isReviewsLoading} w={"10%"} h={"30px"}>
+                <Skeleton isLoaded={!isReviewsLoading} w={"100%"}>
                     <Heading mb={5} fontSize={"2xl"}>
                         <HStack>
                             <FaStar />
