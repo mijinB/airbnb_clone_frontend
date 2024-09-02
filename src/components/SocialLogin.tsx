@@ -1,6 +1,5 @@
 import { Box, Button, Divider, HStack, Text, VStack } from "@chakra-ui/react";
 import { FaComment, FaGithub } from "react-icons/fa";
-import { redirect } from "react-router-dom";
 
 export default function SocialLogin() {
     const kakaoParams = {

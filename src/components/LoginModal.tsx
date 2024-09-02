@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { FaUserNinja, FaLock } from "react-icons/fa";
 import SocialLogin from "./SocialLogin";
+import { useState } from "react";
 
 interface LoginModalProps {
     isOpen: boolean;
@@ -21,13 +22,34 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [emailError, setEmailError] = useState("");
+
+    const onChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
+        const { name, value } = event.currentTarget;
+        if (name === "username") {
+            setUsername(value);
+        } else if (name === "password") {
+            setPassword(value);
+        }
+    };
+    const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (!email.includes("@")) {
+            setEmailError("please write a valid email");
+        }
+        console.log(username, password);
+    };
+
     return (
         <Modal onClose={onClose} isOpen={isOpen}>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>Log in</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody>
+                <ModalBody as="form" onSubmit={onSubmit as any}>
                     <VStack>
                         <InputGroup>
                             <InputLeftElement
@@ -37,7 +59,14 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                                     </Box>
                                 }
                             />
-                            <Input variant={"filled"} placeholder="Username" />
+                            <Input
+                                required
+                                value={username}
+                                onChange={onChange}
+                                name="username"
+                                variant={"filled"}
+                                placeholder="Username"
+                            />
                         </InputGroup>
                         <InputGroup>
                             <InputLeftElement
@@ -47,10 +76,18 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                                     </Box>
                                 }
                             />
-                            <Input variant={"filled"} placeholder="Password" />
+                            <Input
+                                required
+                                value={password}
+                                onChange={onChange}
+                                name="password"
+                                type="password"
+                                variant={"filled"}
+                                placeholder="Password"
+                            />
                         </InputGroup>
                     </VStack>
-                    <Button mt={4} width={"100%"} colorScheme={"red"}>
+                    <Button type="submit" mt={4} width={"100%"} colorScheme={"red"}>
                         Log in
                     </Button>
                     <SocialLogin />
