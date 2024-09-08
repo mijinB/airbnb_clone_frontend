@@ -56,7 +56,9 @@ export default function RoomDetail() {
                         overflow={"hidden"}
                     >
                         <Skeleton isLoaded={!isRoomLoading} w={"100%"} h={"100%"}>
-                            <Image w={"100%"} h={"100%"} objectFit={"cover"} src={RoomData?.photos[index].file} />
+                            {RoomData?.photos && RoomData.photos.length > 0 ? (
+                                <Image w={"100%"} h={"100%"} objectFit={"cover"} src={RoomData?.photos[index].file} />
+                            ) : null}
                         </Skeleton>
                     </GridItem>
                 ))}
