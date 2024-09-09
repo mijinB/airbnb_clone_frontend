@@ -4,7 +4,6 @@ import RoomSkeleton from "../components/RoomSkeleton";
 import { getRooms } from "../api";
 import { useQuery } from "@tanstack/react-query";
 import { IRoomList } from "../types";
-import { useEffect } from "react";
 
 export default function Home() {
     // useQuery( ["캐싱되는 key 값"], fetch하는 함수 )
@@ -38,6 +37,7 @@ export default function Home() {
                     city={room.city}
                     country={room.country}
                     price={room.price}
+                    isOwner={room.is_owner}
                 />
             ))}
         </Grid>
