@@ -1,10 +1,10 @@
-import { Box, Button, Container, FormControl, Heading, Input, VStack } from "@chakra-ui/react";
+import { Box, Button, Container, FormControl, Heading, Input, useToast, VStack } from "@chakra-ui/react";
 import useHostOnlyPage from "../components/HostOnlyPage";
 import ProtectedPage from "../components/ProtectedPage";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { getUploadURL, uploadImage } from "../api";
+import { createPhoto, getUploadURL, uploadImage } from "../api";
 
 interface IForm {
     file: FileList;
@@ -16,11 +16,31 @@ interface IUploadURLResponse {
 }
 
 export default function UploadPhotos() {
-    const { register, handleSubmit, watch } = useForm<IForm>();
+    const { register, handleSubmit, watch, reset } = useForm<IForm>();
+    const { roomPk } = useParams();
+    const toast = useToast();
+    const createPhotoMutation = useMutation({
+        mutationFn: createPhoto,
+        onSuccess: () => {
+            toast({
+                status: "success",
+                title: "Image uploaded!",
+                description: "Feel Free to upload more images.",
+                isClosable: true,
+            });
+            reset();
+        },
+    });
     const uploadImageMutation = useMutation({
         mutationFn: uploadImage,
-        onSuccess: (data: any) => {
-            console.log(data);
+        onSuccess: ({ result }: any) => {
+            if (roomPk) {
+                createPhotoMutation.mutate({
+                    description: "I love react",
+                    file: `https://...image url${result.id}/public`,
+                    roomPk,
+                });
+            }
         },
     });
     const uploadURLMutation = useMutation({
@@ -32,11 +52,10 @@ export default function UploadPhotos() {
             });
         },
     });
-    const { roomPk } = useParams();
+    useHostOnlyPage();
     const onSubmit = (data: any) => {
         uploadURLMutation.mutate();
     };
-    useHostOnlyPage();
 
     return (
         <ProtectedPage>
@@ -47,7 +66,16 @@ export default function UploadPhotos() {
                         <FormControl>
                             <Input {...register("file")} type="file" accept="image/*" />
                         </FormControl>
-                        <Button type="submit" w="full" colorScheme={"red"}>
+                        <Button
+                            isLoading={
+                                createPhotoMutation.isPending ||
+                                uploadImageMutation.isPending ||
+                                uploadURLMutation.isPending
+                            }
+                            type="submit"
+                            w="full"
+                            colorScheme={"red"}
+                        >
                             Upload photos
                         </Button>
                     </VStack>
