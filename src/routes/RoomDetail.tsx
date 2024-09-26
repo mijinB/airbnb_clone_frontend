@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import type { Value } from "react-calendar/dist/cjs/shared/types";
+import type { Value as Date } from "react-calendar/dist/cjs/shared/types";
 import { getRoom, getRoomReviews } from "../api";
 import { IReview, IRoomDetail } from "../types";
 import {
@@ -19,7 +19,7 @@ import {
     VStack,
 } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function RoomDetail() {
     const { roomPk } = useParams();
@@ -31,8 +31,17 @@ export default function RoomDetail() {
         queryKey: ["rooms", roomPk, "reviews"],
         queryFn: getRoomReviews,
     });
-    const [dates, setDates] = useState<Value>();
-    console.log(dates);
+    const [dates, setDates] = useState<Date>();
+    useEffect(() => {
+        if (dates && Array.isArray(dates)) {
+            const [firstDate, secondDate] = dates;
+            if (firstDate && secondDate) {
+                const [checkIn] = firstDate.toJSON().split("T");
+                const [checkOut] = secondDate.toJSON().split("T");
+                console.log(checkIn, checkOut);
+            }
+        }
+    }, [dates]);
 
     return (
         <Box
@@ -125,7 +134,7 @@ export default function RoomDetail() {
                 </Box>
                 <Box pt={10}>
                     <Calendar
-                        onChange={setDates}
+                        onChange={(v) => setDates(v)}
                         prev2Label={null}
                         next2Label={null}
                         minDetail="month"
