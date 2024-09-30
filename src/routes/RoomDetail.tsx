@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import "../calendar.css";
 import type { Value as Date } from "react-calendar/dist/cjs/shared/types";
 import { checkBooking, getRoom, getRoomReviews } from "../api";
 import { IReview, IRoomDetail } from "../types";
@@ -78,7 +79,7 @@ export default function RoomDetail() {
                     </GridItem>
                 ))}
             </Grid>
-            <Grid gap={20} templateColumns={"2fr 1fr"} maxW="container.lg" mb={40}>
+            <Grid gap={20} templateColumns={"2fr 1fr"} w="100%" mb={40}>
                 <Box>
                     <HStack justifyContent={"space-between"} mt={10}>
                         <VStack alignItems={"flex-start"}>
@@ -134,6 +135,7 @@ export default function RoomDetail() {
                 </Box>
                 <Box pt={10}>
                     <Calendar
+                        goToRangeStartOnSelect
                         onChange={(v) => setDates(v)}
                         prev2Label={null}
                         next2Label={null}
@@ -143,7 +145,7 @@ export default function RoomDetail() {
                         selectRange
                     />
                     <Button
-                        isLoading={isCheckingBooking}
+                        isLoading={isCheckingBooking && dates !== undefined}
                         isDisabled={!checkBookingData?.ok}
                         w="100%"
                         mt={5}
