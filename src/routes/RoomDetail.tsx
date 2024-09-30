@@ -21,6 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
 import { useState } from "react";
+import { Helmet } from "react-helmet";
 
 export default function RoomDetail() {
     const { roomPk } = useParams();
@@ -47,6 +48,9 @@ export default function RoomDetail() {
                 lg: 40,
             }}
         >
+            <Helmet>
+                <title>{RoomData ? RoomData.name : "Loading..."}</title>
+            </Helmet>
             <Skeleton isLoaded={!isRoomLoading} w={"25%"}>
                 <Heading>{RoomData?.name}</Heading>
             </Skeleton>
