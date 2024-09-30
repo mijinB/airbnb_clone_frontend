@@ -3,11 +3,12 @@ import { useParams } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import type { Value as Date } from "react-calendar/dist/cjs/shared/types";
-import { getRoom, getRoomReviews } from "../api";
+import { checkBooking, getRoom, getRoomReviews } from "../api";
 import { IReview, IRoomDetail } from "../types";
 import {
     Avatar,
     Box,
+    Button,
     Container,
     Grid,
     GridItem,
@@ -19,7 +20,7 @@ import {
     VStack,
 } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function RoomDetail() {
     const { roomPk } = useParams();
@@ -27,21 +28,16 @@ export default function RoomDetail() {
         queryKey: ["rooms", roomPk],
         queryFn: getRoom,
     });
-    const { isLoading: isReviewsLoading, data: reviewsData } = useQuery<IReview[]>({
+    const { data: reviewsData } = useQuery<IReview[]>({
         queryKey: ["rooms", roomPk, "reviews"],
         queryFn: getRoomReviews,
     });
     const [dates, setDates] = useState<Date>();
-    useEffect(() => {
-        if (dates && Array.isArray(dates)) {
-            const [firstDate, secondDate] = dates;
-            if (firstDate && secondDate) {
-                const [checkIn] = firstDate.toJSON().split("T");
-                const [checkOut] = secondDate.toJSON().split("T");
-                console.log(checkIn, checkOut);
-            }
-        }
-    }, [dates]);
+    const { data: checkBookingData, isLoading: isCheckingBooking } = useQuery({
+        queryKey: ["check", roomPk, dates],
+        queryFn: checkBooking,
+        enabled: dates !== undefined,
+    });
 
     return (
         <Box
@@ -78,7 +74,7 @@ export default function RoomDetail() {
                     </GridItem>
                 ))}
             </Grid>
-            <Grid gap={20} templateColumns={"2fr 1fr"} maxW="container.lg">
+            <Grid gap={20} templateColumns={"2fr 1fr"} maxW="container.lg" mb={40}>
                 <Box>
                     <HStack justifyContent={"space-between"} mt={10}>
                         <VStack alignItems={"flex-start"}>
@@ -142,6 +138,18 @@ export default function RoomDetail() {
                         maxDate={new Date(Date.now() + 60 * 60 * 24 * 7 * 4 * 6 * 1000)}
                         selectRange
                     />
+                    <Button
+                        isLoading={isCheckingBooking}
+                        isDisabled={!checkBookingData?.ok}
+                        w="100%"
+                        mt={5}
+                        colorScheme={"red"}
+                    >
+                        Make booking
+                    </Button>
+                    {!isCheckingBooking && !checkBookingData?.ok ? (
+                        <Text color={"red.500"}>Can't book on those dates, sorry</Text>
+                    ) : null}
                 </Box>
             </Grid>
         </Box>
